@@ -1,0 +1,69 @@
+{
+  "locations": [
+    {
+      "id": 0,
+      "name": "Hub",
+      "weight": 0
+    },
+    {
+      "id": 1,
+      "name": "Conggeang",
+      "weight": 8.5
+    },
+    {
+      "id": 2,
+      "name": "Tanjungsari",
+      "weight": 12.3
+    },
+    {
+      "id": 3,
+      "name": "Bumiaji",
+      "weight": 15.6
+    },
+    {
+      "id": 4,
+      "name": "Sumedang Utara",
+      "weight": 6.2
+    },
+    {
+      "id": 5,
+      "name": "Cibeur",
+      "weight": 18.4
+    },
+    {
+      "id": 6,
+      "name": "Sumedang Selatan",
+      "weight": 11.2
+    },
+    {
+      "id": 7,
+      "name": "Cimanuk",
+      "weight": 17.5
+    },
+    {
+      "id": 8,
+      "name": "Jatinangor",
+      "weight": 22.1
+    },
+    {
+      "id": 9,
+      "name": "Pagadungan",
+      "weight": 14.8
+    },
+    {
+      "id": 10,
+      "name": "Cimalaka",
+      "weight": 35.2
+    },
+    {
+      "id": 11,
+      "name": "Ujungjaya",
+      "weight": 13.7
+    },
+    {
+      "id": 12,
+      "name": "Darmaraja",
+      "weight": 16.8
+    }
+  ]
+}

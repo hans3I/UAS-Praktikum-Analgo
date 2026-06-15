@@ -1,0 +1,11 @@
+{
+  "subsidy": {
+    "fuel_price": 5000,
+    "server_cost_per_ms": 50
+  },
+
+  "crisis": {
+    "fuel_price": 20000,
+    "server_cost_per_ms": 50
+  }
+}
