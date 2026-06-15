@@ -14,6 +14,11 @@ from algorithms.heuristic import (
     print_route_summary
 )
 
+from algorithms.exact import (
+    exact_tsp,
+    print_exact_route_summary
+)
+
 
 def run_heuristic(distance_matrix):
     """
@@ -23,6 +28,30 @@ def run_heuristic(distance_matrix):
     start_time = time.perf_counter()
 
     route, total_distance = greedy_nearest_neighbor(
+        distance_matrix
+    )
+
+    end_time = time.perf_counter()
+
+    execution_time_ms = (
+        end_time - start_time
+    ) * 1000
+
+    return (
+        route,
+        total_distance,
+        execution_time_ms
+    )
+
+
+def run_exact(distance_matrix):
+    """
+    Menjalankan algoritma exact dan mengukur waktu eksekusi.
+    """
+
+    start_time = time.perf_counter()
+
+    route, total_distance = exact_tsp(
         distance_matrix
     )
 
@@ -86,6 +115,36 @@ def main():
     print(
         f"Route Valid: "
         f"{is_valid}"
+    )
+
+    # =====================
+    # EXACT (BACKTRACKING)
+    # =====================
+
+    print("\nMenjalankan Exact (Backtracking with Pruning)...")
+
+    route_exact, total_distance_exact, execution_time_exact = run_exact(
+        distance_matrix
+    )
+
+    is_valid_exact = validate_route(
+        route_exact,
+        len(distance_matrix)
+    )
+
+    print_exact_route_summary(
+        route_exact,
+        total_distance_exact
+    )
+
+    print(
+        f"Waktu Eksekusi: "
+        f"{execution_time_exact:.4f} ms"
+    )
+
+    print(
+        f"Route Valid: "
+        f"{is_valid_exact}"
     )
 
     # =====================
