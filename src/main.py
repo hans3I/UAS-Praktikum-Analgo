@@ -19,6 +19,7 @@ from algorithms.exact import (
     print_exact_route_summary
 )
 
+from scenario import calculate_cost
 
 def run_heuristic(distance_matrix):
     """
@@ -115,6 +116,34 @@ def main():
     print(
         f"Route Valid: "
         f"{is_valid}"
+    )
+
+    cost_result = calculate_cost(
+        total_distance,
+        execution_time,
+        scenario
+    )
+
+    print("\n=== ANALISIS EKONOMI ===")
+
+    print(
+        f"BBM Digunakan: "
+        f"{cost_result['fuel_used']:.2f} liter"
+    )
+
+    print(
+        f"Biaya BBM: "
+        f"Rp {cost_result['fuel_cost']:,.0f}"
+    )
+
+    print(
+        f"Biaya Server: "
+        f"Rp {cost_result['server_cost']:,.0f}"
+    )
+
+    print(
+        f"Total Biaya: "
+        f"Rp {cost_result['total_cost']:,.0f}"
     )
 
     # =====================
