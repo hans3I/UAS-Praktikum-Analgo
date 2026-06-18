@@ -6,8 +6,8 @@
 
 ## Anggota Kelompok & Peran
 - **Dean Frederic Wijaya (140810240027)**: Implementasi Algoritma (Eksak).
-- **Hansel Stevan Boike (140810240079)**: Implementasi Algoritma (Heuristik) & Implementasi Data Loader.
-- **Satrio Rafi Fahrezi (140810240063)**: Perancangan Cost Function & Beban Dinamis.
+- **Hansel Stevan Boike (140810240079)**: Implementasi Algoritma(Heuristik) & Implementasi Data Loader.
+- **Satrio Rafi Fahrezi (140810240063)**: Perancangan *Cost Function* & Beban Dinamis.
 - **Steven Hapnico S.N. (140810240065)**: Pemodelan Skenario Ekonomi & Validasi Data.
 - **Valensius Alven (140810240059)**: Analisis Keputusan Bisnis, Visualisasi Komparatif TCO, & Pelaporan Strategis.
 - **Pemodelan Data**: Kolaborasi Tim (5 orang).
