@@ -58,7 +58,7 @@ Visualisasi perbandingan biaya total (TCO) antara algoritma Heuristik dan Eksak:
 Berdasarkan hasil simulasi pada 13 lokasi pelanggan, kami menemukan korelasi kuat antara harga BBM dan efektivitas algoritma:
 
 - **Skenario Subsidi (BBM Murah)**: Biaya server yang tinggi pada algoritma Eksak tidak sebanding dengan penghematan BBM yang dihasilkan. Dalam kondisi ini, **Heuristik** adalah pilihan yang paling menguntungkan.
-- **Skenario Krisis (BBM Mahal)**: Penghematan jarak yang dihasilkan algoritma Eksak memberikan efisiensi biaya yang jauh lebih besar daripada tagihan server. Investasi pada algoritma yang lebih "pintar" memberikan ROI positif.
-- **Titik Break-Even**: Algoritma Eksak mulai menunjukkan keunggulan finansial ketika harga BBM melampaui ambang batas tertentu di mana efisiensi operasional kendaraan menjadi lebih krusial daripada biaya komputasi.
+- **Skenario Krisis (BBM Mahal)**: Pada data saat ini, **Heuristik** tetap lebih murah karena penghematan BBM dari algoritma Eksak masih belum mampu menutup biaya server yang jauh lebih tinggi.
+- **Titik Break-Even**: Ambang break-even hasil perhitungan berada di sekitar **Rp 1.890.086/L**, jauh di atas skenario **Subsidi** (`Rp 5.000/L`) maupun **Krisis** (`Rp 20.000/L`).
 
-**Kesimpulan**: Perusahaan disarankan untuk mengimplementasikan sistem *Switching* otomatis yang menggunakan Heuristik untuk operasional rutin dan beralih ke Eksak saat terjadi lonjakan harga energi atau untuk rute dengan beban paket yang sangat berat.
+**Kesimpulan**: Untuk dataset dan asumsi biaya saat ini, perusahaan lebih tepat menggunakan **Heuristik** pada kedua skenario yang diuji. Algoritma **Eksak** baru layak dipertimbangkan jika biaya komputasi turun drastis atau harga BBM naik jauh melampaui ambang break-even tersebut.

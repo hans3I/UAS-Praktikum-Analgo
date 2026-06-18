@@ -221,10 +221,18 @@ def jalankan_analisis():
     print("=" * 75)
     print("1. Efisiensi Jarak: Algoritma Eksak berhasil mereduksi jarak tempuh secara")
     print("   maksimal, namun memerlukan biaya server yang lebih tinggi.")
-    print("2. Sensitivitas Harga: Skenario Krisis meningkatkan urgensi optimasi rute")
-    print("   karena penghematan BBM lebih besar daripada kenaikan biaya server.")
-    print("3. Keputusan: Gunakan Heuristik untuk kondisi ekonomi stabil (Subsidi) dan")
-    print("   Eksak untuk kondisi harga BBM tinggi guna mencapai efisiensi biaya.")
+
+    if break_even["status"] == "ok":
+        threshold = break_even["threshold"]
+        print("2. Sensitivitas Harga: Break-even harga BBM berada jauh di atas dua skenario")
+        print(f"   uji, yaitu sekitar Rp {threshold:,.2f}/L.")
+        print("3. Keputusan: Pada skenario Subsidi maupun Krisis saat ini, Heuristik tetap")
+        print("   menghasilkan TCO lebih rendah dibanding Eksak.")
+    else:
+        print("2. Sensitivitas Harga: Tidak ditemukan break-even positif yang membuat")
+        print("   algoritma Eksak lebih murah pada asumsi data saat ini.")
+        print("3. Keputusan: Heuristik menjadi pilihan biaya terendah untuk skenario uji")
+        print("   yang tersedia saat ini.")
     print("=" * 75)
 
 def main():
