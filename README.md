@@ -50,7 +50,9 @@ Berikut adalah visualisasi hasil eksekusi komparasi kedua algoritma pada skenari
 
 ### Output Eksekusi Terminal
 Menampilkan perincian komputasi jarak, waktu eksekusi, dan rincian biaya operasional:
-![Screenshot Output Terminal](docs/terminal_output.png)
+![Screenshot Output Terminal](docs/output1.png)
+![Screenshot Output Terminal](docs/output2.png)
+![Screenshot Output Terminal](docs/output3.png)
 
 ### Grafik Perbandingan TCO
 Visualisasi perbandingan biaya total (TCO) antara algoritma Heuristik dan Eksak:
