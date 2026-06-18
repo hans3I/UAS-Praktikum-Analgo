@@ -23,12 +23,26 @@ Analisis difokuskan pada **Total Cost of Ownership (TCO)** yang menggabungkan bi
 Pastikan Anda memiliki Python 3 terinstal. Jalankan perintah berikut dari direktori utama proyek:
 
 ```bash
-# Berpindah ke direktori source code
-cd src
+# Menjalankan simulasi satu skenario ekonomi
+python src/main.py --scenario subsidy
+python src/main.py --scenario crisis
 
-# Menjalankan laporan analisis keputusan bisnis
-python report.py
+# Menjalankan laporan perbandingan dua skenario wajib
+python src/report.py
 ```
+
+Keterangan output:
+- `python src/main.py --scenario subsidy|crisis`
+  - menjalankan algoritma Heuristik dan Eksak untuk satu skenario ekonomi
+  - menampilkan rute, total jarak, waktu eksekusi, validasi rute, dan analisis biaya
+- `python src/report.py`
+  - membandingkan skenario `subsidy` dan `crisis`
+  - menampilkan urutan rute kedua algoritma, tabel TCO, analisis break-even harga BBM, dan ringkasan eksekutif
+
+Makna break-even:
+- break-even harga BBM = harga per liter saat TCO Heuristik sama dengan TCO Eksak
+- jika harga BBM aktual masih di bawah nilai ini, Heuristik tetap lebih murah
+- jika harga BBM melampaui nilai ini, Eksak baru mulai layak dipertimbangkan secara biaya
 
 ## Hasil Simulasi & Komparasi
 
