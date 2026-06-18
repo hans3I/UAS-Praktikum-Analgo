@@ -100,6 +100,7 @@ def main():
     scenario = load_scenario(args.scenario)
 
     print("\nScenario:")
+    print(f"Name: {args.scenario}")
     print(scenario)
 
     # =====================

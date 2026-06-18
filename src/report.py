@@ -4,8 +4,13 @@ Tugas Akhir Praktikum Analisis Algoritma
 
 Modul ini melakukan perbandingan komprehensif antara algoritma Heuristik (Greedy)
 dan Eksak (Backtracking) dengan fokus pada Total Cost of Ownership (TCO).
+
+Kontrak eksekusi:
+- `main.py` menjalankan satu skenario ekonomi via `--scenario`
+- `report.py` selalu membandingkan dua skenario wajib: `subsidy` dan `crisis`
 """
 
+import argparse
 import os
 import sys
 import time
@@ -17,6 +22,23 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from load_data import load_distance_matrix, load_customers, load_scenario
 from algorithms.heuristic import greedy_nearest_neighbor
 from algorithms.exact import exact_tsp
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description=(
+            "Run comparative business report for both required economic scenarios: "
+            "subsidy and crisis."
+        )
+    )
+    return parser.parse_args()
+
+
+def run_algorithm(algorithm, distance_matrix):
+    start_time = time.perf_counter()
+    route, total_distance = algorithm(distance_matrix)
+    execution_time_ms = (time.perf_counter() - start_time) * 1000
+    return route, total_distance, execution_time_ms
 
 def hitung_bbm_dinamis(
     rute: List[int], 
@@ -58,34 +80,34 @@ def jalankan_analisis():
         ("KRISIS", load_scenario("crisis"))
     ]
     
-    BIAYA_SERVER_MS = 50
-    
+    biaya_server_ms = scenarios[0][1]["server_cost_per_ms"]
+
     # Eksekusi Algoritma
-    # 1. Heuristik
-    t_start = time.perf_counter()
-    rute_h, jarak_h = greedy_nearest_neighbor(dist_matrix)
-    waktu_h = (time.perf_counter() - t_start) * 1000
-    
-    # 2. Eksak
-    t_start = time.perf_counter()
-    rute_e, jarak_e = exact_tsp(dist_matrix)
-    waktu_e = (time.perf_counter() - t_start) * 1000
+    rute_h, jarak_h, waktu_h = run_algorithm(
+        greedy_nearest_neighbor,
+        dist_matrix
+    )
+    rute_e, jarak_e, waktu_e = run_algorithm(
+        exact_tsp,
+        dist_matrix
+    )
     
     print("=" * 75)
     print(f"{'LAPORAN ANALISIS KEPUTUSAN BISNIS - LAST MILE DELIVERY':^75}")
     print("=" * 75)
+    print("Mode: comparative report for scenarios subsidy + crisis")
     
     for nama_skenario, data_skenario in scenarios:
         harga_bbm = data_skenario['fuel_price']
         
         # Hitung TCO Heuristik
         bbm_h = hitung_bbm_dinamis(rute_h, dist_matrix, customers, harga_bbm)
-        srv_h = waktu_h * BIAYA_SERVER_MS
+        srv_h = waktu_h * biaya_server_ms
         tco_h = bbm_h + srv_h
         
         # Hitung TCO Eksak
         bbm_e = hitung_bbm_dinamis(rute_e, dist_matrix, customers, harga_bbm)
-        srv_e = waktu_e * BIAYA_SERVER_MS
+        srv_e = waktu_e * biaya_server_ms
         tco_e = bbm_e + srv_e
         
         hemat = tco_h - tco_e
@@ -114,5 +136,10 @@ def jalankan_analisis():
     print("   Eksak untuk kondisi harga BBM tinggi guna mencapai efisiensi biaya.")
     print("=" * 75)
 
-if __name__ == "__main__":
+def main():
+    parse_args()
     jalankan_analisis()
+
+
+if __name__ == '__main__':
+    main()
