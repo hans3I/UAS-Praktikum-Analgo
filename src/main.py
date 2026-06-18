@@ -1,5 +1,6 @@
-# main.py
+"""Main CLI for last mile delivery optimization."""
 
+import argparse
 import time
 
 from load_data import (
@@ -20,6 +21,19 @@ from algorithms.exact import (
 )
 
 from scenario import calculate_cost
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Run last mile delivery optimization for one economic scenario."
+    )
+    parser.add_argument(
+        "--scenario",
+        choices=["subsidy", "crisis"],
+        default="subsidy",
+        help="Economic scenario to evaluate."
+    )
+    return parser.parse_args()
 
 def run_heuristic(distance_matrix):
     """
@@ -70,6 +84,7 @@ def run_exact(distance_matrix):
 
 
 def main():
+    args = parse_args()
 
     print("=" * 50)
     print("LAST MILE DELIVERY OPTIMIZATION")
@@ -82,8 +97,7 @@ def main():
     distance_matrix = load_distance_matrix()
     customers = load_customers()
 
-    # Ganti menjadi "crisis" untuk skenario krisis
-    scenario = load_scenario("subsidy")
+    scenario = load_scenario(args.scenario)
 
     print("\nScenario:")
     print(scenario)
