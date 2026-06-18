@@ -14,7 +14,6 @@ import argparse
 import os
 import sys
 import time
-from typing import List, Dict, Any
 
 # Memastikan modul lokal dapat diimport
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -22,6 +21,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from load_data import load_distance_matrix, load_customers, load_scenario
 from algorithms.heuristic import greedy_nearest_neighbor
 from algorithms.exact import exact_tsp
+from scenario import calculate_cost
 
 
 def parse_args():
@@ -39,36 +39,6 @@ def run_algorithm(algorithm, distance_matrix):
     route, total_distance = algorithm(distance_matrix)
     execution_time_ms = (time.perf_counter() - start_time) * 1000
     return route, total_distance, execution_time_ms
-
-def hitung_bbm_dinamis(
-    rute: List[int], 
-    matriks_jarak: List[List[float]], 
-    data_pelanggan: List[Dict[str, Any]], 
-    harga_bbm: float
-) -> float:
-    """
-    Menghitung biaya bensin berdasarkan beban paket yang berkurang di tiap titik.
-    Formula Konsumsi: R(w) = 0.02 + 0.03 * (beban_saat_ini / beban_maksimal) L/km
-    """
-    berat_map = {p['id']: p['weight'] for p in data_pelanggan}
-    
-    beban_maksimal = sum(berat_map.values())
-    beban_saat_ini = beban_maksimal
-    total_biaya = 0.0
-    
-    for i in range(len(rute) - 1):
-        u, v = rute[i], rute[i+1]
-        jarak = matriks_jarak[u][v]
-        
-        # Interpolasi linear konsumsi bensin (0.02 - 0.05 L/km)
-        rasio = 0.02 + 0.03 * (beban_saat_ini / beban_maksimal) if beban_maksimal > 0 else 0.02
-        liter = jarak * rasio
-        total_biaya += liter * harga_bbm
-        
-        # Update beban setelah pengantaran di lokasi v
-        beban_saat_ini -= berat_map.get(v, 0)
-        
-    return total_biaya
 
 def jalankan_analisis():
     # Load dataset
@@ -99,16 +69,29 @@ def jalankan_analisis():
     
     for nama_skenario, data_skenario in scenarios:
         harga_bbm = data_skenario['fuel_price']
-        
-        # Hitung TCO Heuristik
-        bbm_h = hitung_bbm_dinamis(rute_h, dist_matrix, customers, harga_bbm)
-        srv_h = waktu_h * biaya_server_ms
-        tco_h = bbm_h + srv_h
-        
-        # Hitung TCO Eksak
-        bbm_e = hitung_bbm_dinamis(rute_e, dist_matrix, customers, harga_bbm)
-        srv_e = waktu_e * biaya_server_ms
-        tco_e = bbm_e + srv_e
+
+        hasil_h = calculate_cost(
+            rute_h,
+            dist_matrix,
+            customers,
+            waktu_h,
+            data_skenario
+        )
+        hasil_e = calculate_cost(
+            rute_e,
+            dist_matrix,
+            customers,
+            waktu_e,
+            data_skenario
+        )
+
+        bbm_h = hasil_h['fuel_cost']
+        srv_h = hasil_h['server_cost']
+        tco_h = hasil_h['total_cost']
+
+        bbm_e = hasil_e['fuel_cost']
+        srv_e = hasil_e['server_cost']
+        tco_e = hasil_e['total_cost']
         
         hemat = tco_h - tco_e
         rekomendasi = "EKSAK" if hemat > 0 else "HEURISTIK"

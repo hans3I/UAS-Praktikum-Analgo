@@ -134,7 +134,9 @@ def main():
     )
 
     cost_result = calculate_cost(
-        total_distance,
+        route,
+        distance_matrix,
+        customers,
         execution_time,
         scenario
     )
