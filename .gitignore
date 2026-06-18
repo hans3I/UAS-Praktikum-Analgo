@@ -1,10 +1,10 @@
 # OS files
+.md/
 .DS_Store
 Thumbs.db
 desktop.ini
 
 # Editor files
-docs/
 .vscode/
 .idea/
 *.swp

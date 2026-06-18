@@ -1,17 +1,25 @@
 import json
+from pathlib import Path
+
+
+BASE_DIR = Path(__file__).resolve().parent
+DATA_DIR = BASE_DIR.parent / "data"
+
+
+def _load_json(filename):
+    file_path = DATA_DIR / filename
+    with file_path.open("r", encoding="utf-8") as file:
+        return json.load(file)
+
 
 def load_distance_matrix():
-    with open("../data/distance_matrix.json", "r", encoding="utf-8") as file:
-        return json.load(file)["adjacency_matrix_13x13"]
+    return _load_json("distance_matrix.json")["adjacency_matrix_13x13"]
 
 
 def load_customers():
-    with open("../data/customers.json", "r", encoding="utf-8") as file:
-        return json.load(file)["locations"]
+    return _load_json("customers.json")["locations"]
 
 
 def load_scenario(scenario_name):
-    with open("../data/scenarios.json", "r", encoding="utf-8") as file:
-        scenarios = json.load(file)
-
+    scenarios = _load_json("scenarios.json")
     return scenarios[scenario_name]
