@@ -44,6 +44,57 @@ def run_algorithm(algorithm, distance_matrix):
 def format_route(route):
     return " -> ".join(map(str, route))
 
+
+def calculate_break_even_price(hasil_h, hasil_e):
+    fuel_used_h = hasil_h["fuel_used"]
+    fuel_used_e = hasil_e["fuel_used"]
+    server_cost_h = hasil_h["server_cost"]
+    server_cost_e = hasil_e["server_cost"]
+
+    fuel_delta = fuel_used_h - fuel_used_e
+    server_delta = server_cost_e - server_cost_h
+
+    if fuel_delta == 0:
+        if server_cost_h == server_cost_e:
+            return {
+                "status": "all_prices_equal",
+                "fuel_delta": fuel_delta,
+                "server_delta": server_delta,
+                "threshold": None
+            }
+
+        return {
+            "status": "no_break_even",
+            "fuel_delta": fuel_delta,
+            "server_delta": server_delta,
+            "threshold": None
+        }
+
+    threshold = server_delta / fuel_delta
+
+    if threshold < 0:
+        return {
+            "status": "no_feasible_positive_threshold",
+            "fuel_delta": fuel_delta,
+            "server_delta": server_delta,
+            "threshold": threshold
+        }
+
+    return {
+        "status": "ok",
+        "fuel_delta": fuel_delta,
+        "server_delta": server_delta,
+        "threshold": threshold
+    }
+
+
+def describe_threshold_position(price, threshold):
+    if price < threshold:
+        return "di bawah"
+    if price > threshold:
+        return "di atas"
+    return "tepat pada"
+
 def jalankan_analisis():
     # Load dataset
     dist_matrix = load_distance_matrix()
@@ -64,6 +115,25 @@ def jalankan_analisis():
     rute_e, jarak_e, waktu_e = run_algorithm(
         exact_tsp,
         dist_matrix
+    )
+
+    hasil_h_break_even = calculate_cost(
+        rute_h,
+        dist_matrix,
+        customers,
+        waktu_h,
+        scenarios[0][1]
+    )
+    hasil_e_break_even = calculate_cost(
+        rute_e,
+        dist_matrix,
+        customers,
+        waktu_e,
+        scenarios[0][1]
+    )
+    break_even = calculate_break_even_price(
+        hasil_h_break_even,
+        hasil_e_break_even
     )
     
     print("=" * 75)
@@ -115,6 +185,36 @@ def jalankan_analisis():
         print(f"{'Total Cost (TCO)':<25} | Rp {tco_h:<19,.0f} | Rp {tco_e:<19,.0f}")
         print("-" * 75)
         print(f"KESIMPULAN: Rekomendasi Algoritma {rekomendasi} (Selisih: Rp {abs(hemat):,.0f})")
+
+    print("\n" + "=" * 75)
+    print(f"{'ANALISIS BREAK-EVEN HARGA BBM':^75}")
+    print("=" * 75)
+    print(f"Konsumsi Heuristik : {hasil_h_break_even['fuel_used']:.4f} liter")
+    print(f"Konsumsi Eksak     : {hasil_e_break_even['fuel_used']:.4f} liter")
+    print(f"Biaya Server Heuristik : Rp {hasil_h_break_even['server_cost']:,.0f}")
+    print(f"Biaya Server Eksak     : Rp {hasil_e_break_even['server_cost']:,.0f}")
+
+    if break_even["status"] == "ok":
+        threshold = break_even["threshold"]
+        print(f"Break-even price    : Rp {threshold:,.2f}/L")
+        print("Rumus               : fuel_h * p + server_h = fuel_e * p + server_e")
+
+        for nama_skenario, data_skenario in scenarios:
+            posisi = describe_threshold_position(
+                data_skenario["fuel_price"],
+                threshold
+            )
+            print(
+                f"- {nama_skenario.title():<8} Rp {data_skenario['fuel_price']:>8,.0f}/L "
+                f"-> {posisi} break-even"
+            )
+    elif break_even["status"] == "all_prices_equal":
+        print("Break-even price    : semua harga. TCO selalu sama.")
+    elif break_even["status"] == "no_break_even":
+        print("Break-even price    : tidak ada. Konsumsi BBM sama, biaya server berbeda.")
+    else:
+        print("Break-even price    : tidak feasible untuk harga BBM positif.")
+        print(f"Nilai ambang hitung : Rp {break_even['threshold']:,.2f}/L")
 
     print("\n" + "=" * 75)
     print(f"{'RINGKASAN EKSEKUTIF':^75}")
