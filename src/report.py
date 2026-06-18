@@ -40,6 +40,10 @@ def run_algorithm(algorithm, distance_matrix):
     execution_time_ms = (time.perf_counter() - start_time) * 1000
     return route, total_distance, execution_time_ms
 
+
+def format_route(route):
+    return " -> ".join(map(str, route))
+
 def jalankan_analisis():
     # Load dataset
     dist_matrix = load_distance_matrix()
@@ -66,6 +70,10 @@ def jalankan_analisis():
     print(f"{'LAPORAN ANALISIS KEPUTUSAN BISNIS - LAST MILE DELIVERY':^75}")
     print("=" * 75)
     print("Mode: comparative report for scenarios subsidy + crisis")
+    print("\nRUTE ALGORITMA")
+    print("-" * 75)
+    print(f"Heuristik (Greedy): {format_route(rute_h)}")
+    print(f"Eksak (Optimal):    {format_route(rute_e)}")
     
     for nama_skenario, data_skenario in scenarios:
         harga_bbm = data_skenario['fuel_price']
