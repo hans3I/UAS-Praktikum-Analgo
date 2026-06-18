@@ -30,6 +30,18 @@ cd src
 python report.py
 ```
 
+## Hasil Simulasi & Komparasi
+
+Berikut adalah visualisasi hasil eksekusi komparasi kedua algoritma pada skenario yang berbeda.
+
+### Output Eksekusi Terminal
+Menampilkan perincian komputasi jarak, waktu eksekusi, dan rincian biaya operasional:
+![Screenshot Output Terminal](docs/terminal_output.png)
+
+### Grafik Perbandingan TCO
+Visualisasi perbandingan biaya total (TCO) antara algoritma Heuristik dan Eksak:
+![Grafik Komparasi TCO](docs/tco_comparison.png)
+
 ## Analisis Algoritma
 
 ### 1. Heuristik (Greedy Nearest Neighbor)
